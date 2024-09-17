@@ -28,8 +28,6 @@ export class UserService {
   }
 
   isLoggedIn(): boolean {
-    const JWT_TOKEN = this.cookie.get('USER_INFO');
-
-    return !!JWT_TOKEN;
+    return !!this.cookie.get('token');
   }
 }
