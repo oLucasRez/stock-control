@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { ProductsDataTransferService } from 'src/app/services/products/products-data-transfer.service';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { GetAllProductsResponse } from 'src/models/interfaces/products/response/get-all-products-response';
@@ -9,7 +10,9 @@ import { GetAllProductsResponse } from 'src/models/interfaces/products/response/
   templateUrl: './dashboard-home.component.html',
   styleUrls: [],
 })
-export class DashboardHomeComponent implements OnInit {
+export class DashboardHomeComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public productsList: GetAllProductsResponse[] = [];
 
   constructor(
@@ -23,22 +26,30 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   getProductsData(): void {
-    this.productService.getAllProducts().subscribe({
-      next: (response) => {
-        if (response.length === 0) return;
+    this.productService
+      .getAllProducts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.length === 0) return;
 
-        this.productsList = response;
-        this.productsDTService.setProductsData(this.productsList);
-      },
-      error: (error) => {
-        console.error(error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Erro ao buscar produtos!',
-          life: 2500,
-        });
-      },
-    });
+          this.productsList = response;
+          this.productsDTService.setProductsData(this.productsList);
+        },
+        error: (error) => {
+          console.error(error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Erro ao buscar produtos!',
+            life: 2500,
+          });
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
