@@ -20,9 +20,9 @@ export class ProductsService {
 
   constructor(private http: HttpClient, private cookie: CookieService) {}
 
-  getAllProducts(): Observable<Array<GetAllProductsResponse>> {
+  getAllProducts(): Observable<GetAllProductsResponse[]> {
     return this.http
-      .get<Array<GetAllProductsResponse>>(
+      .get<GetAllProductsResponse[]>(
         `${this.API_URL}/products`,
         this.httpOptions
       )
