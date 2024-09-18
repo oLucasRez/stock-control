@@ -46,6 +46,7 @@
                   label="Adicionar"
                   pTooltip="Adicionar categoria"
                   tooltipPosition="top"
+                  (onClick)="handleCategoryEvent(addCategoryAction)"
                 ></p-button>
               </div>
             </th>
@@ -66,7 +67,13 @@
                   class="p-button-rounded p-button-warning"
                   pTooltip="Editar categoria"
                   tooltipPosition="top"
-                  (click)="handleCategoryEvent(editCategoryAction, category.id)"
+                  (click)="
+                    handleCategoryEvent(
+                      editCategoryAction,
+                      category.id,
+                      category.name
+                    )
+                  "
                 ></button>
                 <button
                   pButton

@@ -19,8 +19,12 @@ export class CategoriesTableComponent {
   public addCategoryAction = CategoryEvent.ADD_CATEGORY_EVENT;
   public editCategoryAction = CategoryEvent.EDIT_CATEGORY_EVENT;
 
-  handleCategoryEvent(event: any, id: string): void {
-    console.log(event);
+  handleCategoryEvent(
+    event: CategoryEvent,
+    id?: string,
+    categoryName?: string
+  ): void {
+    this.categoryEvent.emit({ action: event, id, name: categoryName });
   }
 
   handleDeleteCategory(categoryID: string, name: string): void {
