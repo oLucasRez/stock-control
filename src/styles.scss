@@ -1,13 +1,15 @@
-.mt-10 {
-  margin-top: 30vh;
-}
-
-.exact_route {
-  button {
-    background-color: #6372c3 !important;
+* {
+  .mt-10 {
+    margin-top: 30vh;
   }
 
-  :host ::ng-deep .p-dropdown {
-    width: 50%;
+  .exact_route {
+    button {
+      background-color: #6b7280 !important;
+    }
+
+    :host ::ng-deep .p-dropdown {
+      width: 50%;
+    }
   }
 }
