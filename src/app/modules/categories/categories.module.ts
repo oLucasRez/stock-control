@@ -19,9 +19,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationService } from 'primeng/api';
+import { CategoriesTableComponent } from './components/categories-table/categories-table.component';
 
 @NgModule({
-  declarations: [CategoriesHomeComponent],
+  declarations: [CategoriesHomeComponent, CategoriesTableComponent],
   imports: [
     CommonModule,
     FormsModule,
