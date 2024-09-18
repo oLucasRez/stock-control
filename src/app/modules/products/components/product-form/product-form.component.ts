@@ -44,7 +44,14 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     price: ['', Validators.required],
     description: ['', Validators.required],
     amount: [0, Validators.required],
+    category_id: ['', Validators.required],
   });
+  public saleProductForm = this.formBuilder.group({
+    amount: [0, Validators.required],
+    product_id: ['', Validators.required],
+  });
+  public saleSelectedProduct!: GetAllProductsResponse;
+  public renderDropdown = false;
 
   public addProductAction = ProductEvent.ADD_PRODUCT_EVENT;
   public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT;
@@ -63,16 +70,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.productAction = this.ref.data;
 
-    if (
-      this.productAction.event.action === this.editProductAction &&
-      this.productAction.productsData.length
-    )
-      this.getProductSelectedData(this.productAction.event.id!);
-
     if (this.productAction.event.action === this.saleProductAction)
       this.getProductsData();
 
     this.getAllCategories();
+    this.renderDropdown = true;
   }
 
   getAllCategories() {
@@ -84,6 +86,12 @@ export class ProductFormComponent implements OnInit, OnDestroy {
           if (!response.length) return;
 
           this.categories = response;
+
+          if (
+            this.productAction.event.action === this.editProductAction &&
+            this.productAction.productsData.length
+          )
+            this.getProductSelectedData(this.productAction.event.id!);
         },
         error: (error) => {
           this.messageService.add({
@@ -141,6 +149,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       price: this.editProductForm.value.price!,
       description: this.editProductForm.value.description!,
       amount: this.editProductForm.value.amount!,
+      category_id: this.editProductForm.value.category_id!,
     };
 
     this.productsService
@@ -186,6 +195,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
       price: this.productSelectedData.price,
       amount: this.productSelectedData.amount,
       description: this.productSelectedData.description,
+      category_id: this.productSelectedData.category.id,
     });
   }
 
